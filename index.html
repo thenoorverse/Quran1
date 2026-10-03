@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برنامج إتقان القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fef6f9;
+    --bg2:#eef7fb;
+    --bg3:#f4fbf3;
+    --mint:#9ad8c4;
+    --mint-d:#5fb89e;
+    --sky:#a9d6ef;
+    --sky-d:#5ba8d6;
+    --rose:#f5b8cc;
+    --rose-d:#e8829f;
+    --gold:#f6cf6a;
+    --gold-d:#e0a83f;
+    --lilac:#cdb8ec;
+    --lilac-d:#a07fd0;
+    --ink:#3a4a52;
+    --ink-soft:#6c7d85;
+    --card:#ffffff;
+    --shadow:0 8px 28px rgba(91,168,214,.14);
+    --shadow-soft:0 3px 12px rgba(120,140,150,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:'Tajawal',sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 12% 8%, #fef0f6 0%, transparent 40%),
+      radial-gradient(circle at 88% 12%, #e7f4fb 0%, transparent 42%),
+      radial-gradient(circle at 50% 100%, #f0faef 0%, transparent 50%),
+      linear-gradient(160deg,#fdfbfa 0%, #f6fbfd 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    padding:18px 14px 60px;
+    line-height:1.85;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  /* ===== Hero ===== */
+  .hero{
+    text-align:center;
+    background:linear-gradient(135deg,#ffffff 0%, #fdf3f8 60%, #eef7fb 100%);
+    border-radius:30px;
+    padding:34px 26px 30px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+    border:2px solid #fff;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 90% 0%, rgba(245,184,204,.25),transparent 45%),
+      radial-gradient(circle at 0% 100%, rgba(154,216,196,.25),transparent 45%);
+    pointer-events:none;
+  }
+  .crescent{font-size:34px;display:block;margin-bottom:6px;}
+  .hero h1{
+    font-family:'Amiri',serif;
+    font-size:clamp(26px,6vw,40px);
+    font-weight:700;
+    color:var(--ink);
+    position:relative;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(90deg,var(--rose-d),var(--lilac-d) 50%,var(--sky-d));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.sub{
+    margin-top:10px;color:var(--ink-soft);font-size:clamp(14px,3.6vw,17px);
+    position:relative;font-weight:500;
+  }
+  .pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px;position:relative;}
+  .pill{
+    background:#fff;border-radius:30px;padding:8px 16px;font-size:13px;font-weight:700;
+    box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:6px;
+  }
+  .pill .ic{font-size:16px;}
+  .pill.m{color:var(--mint-d);} .pill.s{color:var(--sky-d);}
+  .pill.r{color:var(--rose-d);} .pill.g{color:#d39e2e;}
+
+  /* ===== Overall progress ===== */
+  .overall{
+    background:var(--card);border-radius:26px;padding:24px 22px;margin-top:18px;
+    box-shadow:var(--shadow);border:2px solid #fff;
+  }
+  .overall-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+  .overall-top h2{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px;}
+  .big-pct{font-family:'Tajawal';font-size:clamp(30px,8vw,46px);font-weight:800;
+    background:linear-gradient(90deg,var(--mint-d),var(--sky-d));
+    -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
+  .bar{height:18px;border-radius:20px;background:#eef2f4;overflow:hidden;box-shadow:inset 0 2px 5px rgba(0,0,0,.05);}
+  .bar > i{
+    display:block;height:100%;width:0;border-radius:20px;
+    background:linear-gradient(90deg,var(--mint),var(--sky) 50%,var(--lilac));
+    transition:width .6s cubic-bezier(.22,1,.36,1);
+  }
+  .stat-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:90px;background:linear-gradient(160deg,#fff,#fafdff);border-radius:18px;
+    padding:14px 10px;text-align:center;box-shadow:var(--shadow-soft);}
+  .stat .n{font-size:24px;font-weight:800;color:var(--sky-d);}
+  .stat.a .n{color:var(--mint-d);} .stat.b .n{color:var(--rose-d);} .stat.c .n{color:var(--lilac-d);}
+  .stat .l{font-size:12px;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+
+  /* ===== Method cards ===== */
+  .section-title{font-size:20px;font-weight:800;margin:26px 4px 4px;display:flex;align-items:center;gap:9px;}
+  .section-title .dot{width:11px;height:11px;border-radius:50%;background:var(--rose-d);box-shadow:0 0 0 5px rgba(245,184,204,.35);}
+  .section-sub{color:var(--ink-soft);font-size:13px;margin:0 4px 14px;font-weight:500;}
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:13px;}
+  .rule{
+    background:var(--card);border-radius:20px;padding:16px 16px 16px 14px;
+    box-shadow:var(--shadow-soft);display:flex;gap:13px;align-items:flex-start;
+    border-right:6px solid var(--mint);position:relative;overflow:hidden;
+  }
+  .rule:nth-child(2){border-right-color:var(--sky);}
+  .rule:nth-child(3){border-right-color:var(--rose);}
+  .rule:nth-child(4){border-right-color:var(--gold);}
+  .rule:nth-child(5){border-right-color:var(--lilac);}
+  .rule:nth-child(6){border-right-color:var(--mint-d);}
+  .rule .em{font-size:26px;line-height:1;flex-shrink:0;margin-top:2px;}
+  .rule h3{font-size:15px;font-weight:800;margin-bottom:3px;}
+  .rule p{font-size:13.5px;color:var(--ink-soft);font-weight:500;line-height:1.7;}
+
+  /* ===== Weekly tracker ===== */
+  .tracker-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:26px 4px 14px;}
+  .tracker-head h2{font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px;}
+  .tracker-head h2 .dot{width:11px;height:11px;border-radius:50%;background:var(--sky-d);box-shadow:0 0 0 5px rgba(169,214,239,.4);}
+  .reset{background:#fff;border:1.5px solid #f0d2dc;color:var(--rose-d);border-radius:30px;
+    padding:7px 15px;font-family:'Tajawal';font-weight:700;font-size:13px;cursor:pointer;transition:.2s;}
+  .reset:hover{background:#fdeef3;}
+
+  .week{
+    background:var(--card);border-radius:22px;margin-bottom:14px;box-shadow:var(--shadow-soft);
+    overflow:hidden;border:2px solid #fff;transition:box-shadow .25s;
+  }
+  .week.done{box-shadow:0 6px 22px rgba(95,184,158,.28);border-color:#d7f0e6;}
+  .week-bar{
+    display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer;user-select:none;
+  }
+  .wk-num{
+    width:48px;height:48px;border-radius:15px;flex-shrink:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;color:#fff;font-weight:800;
+    background:linear-gradient(150deg,var(--sky),var(--sky-d));box-shadow:0 4px 10px rgba(91,168,214,.3);
+  }
+  .week.done .wk-num{background:linear-gradient(150deg,var(--mint),var(--mint-d));box-shadow:0 4px 10px rgba(95,184,158,.35);}
+  .wk-num small{font-size:9px;font-weight:600;opacity:.9;line-height:1;}
+  .wk-num b{font-size:20px;line-height:1;}
+  .wk-info{flex:1;min-width:0;}
+  .wk-info .t{font-size:15.5px;font-weight:800;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .wk-info .juz-badge{background:#fdeef3;color:var(--rose-d);font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;}
+  .week.done .wk-info .juz-badge{background:#e3f4ec;color:var(--mint-d);}
+  .mini{height:8px;border-radius:10px;background:#eef2f4;overflow:hidden;margin-top:7px;}
+  .mini > i{display:block;height:100%;width:0;border-radius:10px;
+    background:linear-gradient(90deg,var(--gold),var(--rose));transition:width .4s;}
+  .week.done .mini > i{background:linear-gradient(90deg,var(--mint),var(--mint-d));}
+  .wk-pct{font-size:13px;font-weight:800;color:var(--ink-soft);flex-shrink:0;min-width:38px;text-align:left;}
+  .chev{flex-shrink:0;color:var(--ink-soft);transition:transform .3s;font-size:14px;}
+  .week.open .chev{transform:rotate(180deg);}
+
+  .week-body{max-height:0;overflow:hidden;transition:max-height .4s ease;background:#fbfdfe;}
+  .week.open .week-body{max-height:900px;}
+  .wb-inner{padding:6px 16px 18px;}
+
+  .days-label{font-size:12px;font-weight:700;color:var(--ink-soft);margin:10px 0 8px;display:flex;align-items:center;gap:6px;}
+  .day{
+    background:#fff;border-radius:15px;padding:11px 13px;margin-bottom:9px;box-shadow:var(--shadow-soft);
+  }
+  .day-top{display:flex;align-items:center;gap:9px;}
+  .day-name{font-size:13.5px;font-weight:800;flex:1;}
+  .day-note{font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .reps{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+  .rep{
+    width:34px;height:34px;border-radius:11px;border:2px solid #e8eef1;background:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;
+    color:var(--ink-soft);cursor:pointer;transition:.18s;
+  }
+  .rep:hover{transform:scale(1.08);border-color:var(--sky);}
+  .rep.on{
+    background:linear-gradient(150deg,var(--mint),var(--mint-d));border-color:transparent;
+    color:#fff;box-shadow:0 3px 8px rgba(95,184,158,.4);transform:scale(1.04);
+  }
+  .rep .pray{font-size:8px;font-weight:600;display:block;margin-top:-2px;opacity:.85;}
+
+  /* day 7 review */
+  .day.review{border-right:5px solid var(--lilac);}
+  .review-chk{display:flex;align-items:center;gap:10px;margin-top:6px;}
+  .toggle{
+    width:50px;height:28px;border-radius:20px;background:#e3e8eb;position:relative;cursor:pointer;
+    flex-shrink:0;transition:.25s;border:none;
+  }
+  .toggle::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.25s;}
+  .toggle.on{background:linear-gradient(90deg,var(--lilac),var(--lilac-d));}
+  .toggle.on::after{right:25px;}
+  .review-chk span{font-size:13px;font-weight:700;}
+
+  /* ===== celebration ===== */
+  .confetti{position:fixed;top:-10px;width:11px;height:11px;z-index:999;pointer-events:none;border-radius:2px;}
+
+  footer{text-align:center;margin-top:30px;color:var(--ink-soft);font-size:12.5px;font-weight:500;}
+  footer b{color:var(--rose-d);}
+
+  @media(max-width:520px){
+    .rep{width:30px;height:30px;font-size:12px;}
+    .wk-num{width:42px;height:42px;}
+    body{padding:14px 10px 50px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="crescent">🌙</span>
+    <h1>برنامج <span class="accent">إتقان القرآن</span></h1>
+    <p class="sub">طريقة مجرّبة وميسّرة لإتقان القرآن في سبعة أشهر ونصف · بإذن الله</p>
+    <div class="pills">
+      <div class="pill m"><span class="ic">📅</span> 30 أسبوعاً</div>
+      <div class="pill s"><span class="ic">📖</span> جزء كل أسبوع</div>
+      <div class="pill r"><span class="ic">🔁</span> 48 تكراراً أسبوعياً</div>
+      <div class="pill g"><span class="ic">⭐</span> 60 ختمة للجزء</div>
+    </div>
+  </div>
+
+  <!-- OVERALL -->
+  <div class="overall">
+    <div class="overall-top">
+      <div>
+        <h2>🏆 إنجازك الكلّي</h2>
+        <p style="font-size:13px;color:var(--ink-soft);font-weight:500;margin-top:2px">تقدّمك في رحلة الإتقان كاملة</p>
+      </div>
+      <div class="big-pct" id="bigPct">0%</div>
+    </div>
+    <div class="bar"><i id="bigBar"></i></div>
+    <div class="stat-row">
+      <div class="stat a"><div class="n" id="stWeeks">0</div><div class="l">أسبوع مكتمل</div></div>
+      <div class="stat"><div class="n" id="stReps">0</div><div class="l">تكرار مُنجَز</div></div>
+      <div class="stat b"><div class="n" id="stReviews">0</div><div class="l">مراجعة ربط</div></div>
+      <div class="stat c"><div class="n" id="stStreak">0</div><div class="l">أيام متتالية</div></div>
+    </div>
+  </div>
+
+  <!-- METHOD -->
+  <div class="section-title"><span class="dot"></span> طريقة البرنامج</div>
+  <p class="section-sub">ست خطوات واضحة تقودك للإتقان بثبات ويُسر</p>
+  <div class="rules">
+    <div class="rule"><span class="em">🗓️</span><div><h3>المدة الإجمالية</h3><p>البرنامج 30 أسبوعاً، كل أسبوع يكون التركيز فيه على جزء واحد فقط.</p></div></div>
+    <div class="rule"><span class="em">🔁</span><div><h3>التكرار اليومي</h3><p>تقرأ الجزء 8 مرات يومياً موزّعة على الصلوات: الفجر 3 · الظهر 2 · العصر 1 · العشاء 1 · النوافل 1، فتُتمّ 48 مرة أسبوعياً.</p></div></div>
+    <div class="rule"><span class="em">🔗</span><div><h3>اليوم السابع للربط</h3><p>يُخصّص لمراجعة كامل الأجزاء السابقة، حتى تصل إلى عشرة أجزاء ثم تُسقِط الأول وتأخذ التالي.</p></div></div>
+    <div class="rule"><span class="em">⭐</span><div><h3>60 ختمة للجزء</h3><p>عند انتهاء الأسبوع تكون قد قرأت الجزء قرابة 60 مرة، فيرسخ ويُتقَن بإذن الله.</p></div></div>
+    <div class="rule"><span class="em">📖</span><div><h3>نصاب المراجعة</h3><p>اجعل أول 3 مراجعات بالنظر في المصحف، ثم 5 مرات على الأقل من حفظك ظهر قلب.</p></div></div>
+    <div class="rule"><span class="em">💪</span><div><h3>لا تتوقف عند الانقطاع</h3><p>إن فاتتك بعض الأجزاء فالأمر يسير، فما مررت به كثيراً يعوّض انقطاعك عنه.</p></div></div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="tracker-head">
+    <h2><span class="dot"></span> 🌿 لوحة المتابعة الأسبوعية</h2>
+    <button class="reset" onclick="resetAll()">↺ إعادة التهيئة</button>
+  </div>
+  <div id="weeks"></div>
+
+  <footer>
+    صُمّم بحبٍّ لرحلتك القرآنية 💛 — <b>تقدّمك يُحفظ تلقائياً على جهازك</b>
+    <div style="margin-top:8px;font-size:11px;color:var(--ink-soft);opacity:.75;">تصميم <span style="direction:ltr;display:inline-block;unicode-bidi:isolate;">@AishahAlbeheri</span></div>
+  </footer>
+</div>
+
+<script>
+/* ===== data ===== */
+const PRAYERS = [
+  {n:'الفجر',c:3},{n:'الظهر',c:2},{n:'العصر',c:1},{n:'العشاء',c:1},{n:'النوافل',c:1}
+];
+// build 8 reps per day with prayer labels
+const DAY_REPS = [];
+PRAYERS.forEach(p=>{for(let i=0;i<p.c;i++)DAY_REPS.push(p.n);});
+const DAY_NAMES = ['اليوم الأول','اليوم الثاني','اليوم الثالث','اليوم الرابع','اليوم الخامس','اليوم السادس'];
+const TOTAL_WEEKS = 30;
+const REPS_PER_WEEK = 6*8; // 48
+
+const KEY='quran_itqan_v1';
+let state = load();
+
+function load(){
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.weeks)return s;}catch(e){}
+  const weeks={};
+  for(let w=1;w<=TOTAL_WEEKS;w++){
+    weeks[w]={reps:{},review:false};
+  }
+  return {weeks,open:1};
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+
+/* ===== render ===== */
+const weeksEl=document.getElementById('weeks');
+function render(){
+  weeksEl.innerHTML='';
+  for(let w=1;w<=TOTAL_WEEKS;w++){
+    const wd=state.weeks[w];
+    const repsDone=Object.values(wd.reps).filter(Boolean).length;
+    const total=REPS_PER_WEEK+1; // +1 review
+    const done=repsDone+(wd.review?1:0);
+    const pct=Math.round(done/total*100);
+    const isDone=pct===100;
+    const isOpen=state.open===w;
+
+    const wk=document.createElement('div');
+    wk.className='week'+(isDone?' done':'')+(isOpen?' open':'');
+
+    let daysHtml='';
+    for(let d=0;d<6;d++){
+      let reps='';
+      for(let r=0;r<8;r++){
+        const id=d+'-'+r;
+        const on=wd.reps[id]?'on':'';
+        reps+=`<button class="rep ${on}" onclick="toggleRep(${w},'${id}',event)">${r+1}<span class="pray">${DAY_REPS[r]}</span></button>`;
+      }
+      daysHtml+=`<div class="day">
+        <div class="day-top"><span class="day-name">📿 ${DAY_NAMES[d]}</span><span class="day-note">8 تكرارات</span></div>
+        <div class="reps">${reps}</div></div>`;
+    }
+    // day 7 review
+    daysHtml+=`<div class="day review">
+      <div class="day-top"><span class="day-name">🔗 اليوم السابع — مراجعة الربط</span></div>
+      <div class="review-chk">
+        <button class="toggle ${wd.review?'on':''}" onclick="toggleReview(${w},event)"></button>
+        <span>راجعتُ الأجزاء السابقة وربطتُها (3 نظر + 5 حفظ)</span>
+      </div></div>`;
+
+    wk.innerHTML=`
+      <div class="week-bar" onclick="openWeek(${w})">
+        <div class="wk-num"><small>أسبوع</small><b>${w}</b></div>
+        <div class="wk-info">
+          <div class="t">${isDone?'✨ ':''}الجزء ${w} <span class="juz-badge">${isDone?'مُتقَن':repsDone+'/48 تكرار'}</span></div>
+          <div class="mini"><i style="width:${pct}%"></i></div>
+        </div>
+        <div class="wk-pct">${pct}%</div>
+        <div class="chev">▼</div>
+      </div>
+      <div class="week-body"><div class="wb-inner">
+        <div class="days-label">📖 الأيام الستة — اضغطي على رقم كل تكرار عند إنجازه</div>
+        ${daysHtml}
+      </div></div>`;
+    weeksEl.appendChild(wk);
+  }
+  updateOverall();
+}
+
+function openWeek(w){state.open=state.open===w?0:w;save();render();}
+
+function toggleRep(w,id,e){
+  e.stopPropagation();
+  const wd=state.weeks[w];
+  const wasDone=isWeekDone(w);
+  wd.reps[id]=!wd.reps[id];
+  save();
+  if(!wasDone && isWeekDone(w)) celebrate();
+  render();
+}
+function toggleReview(w,e){
+  e.stopPropagation();
+  const wd=state.weeks[w];
+  const wasDone=isWeekDone(w);
+  wd.review=!wd.review;
+  save();
+  if(!wasDone && isWeekDone(w)) celebrate();
+  render();
+}
+function isWeekDone(w){
+  const wd=state.weeks[w];
+  return Object.values(wd.reps).filter(Boolean).length===REPS_PER_WEEK && wd.review;
+}
+
+function updateOverall(){
+  let totalRepsDone=0, weeksDone=0, reviews=0;
+  for(let w=1;w<=TOTAL_WEEKS;w++){
+    const wd=state.weeks[w];
+    totalRepsDone+=Object.values(wd.reps).filter(Boolean).length;
+    if(wd.review)reviews++;
+    if(isWeekDone(w))weeksDone++;
+  }
+  const grandTotal=TOTAL_WEEKS*(REPS_PER_WEEK+1);
+  const doneAll=totalRepsDone+reviews;
+  const pct=Math.round(doneAll/grandTotal*100);
+  document.getElementById('bigPct').textContent=pct+'%';
+  document.getElementById('bigBar').style.width=pct+'%';
+  document.getElementById('stWeeks').textContent=weeksDone;
+  document.getElementById('stReps').textContent=totalRepsDone;
+  document.getElementById('stReviews').textContent=reviews;
+  document.getElementById('stStreak').textContent=weeksDone; // simplified streak = completed weeks
+}
+
+function resetAll(){
+  if(confirm('هل تريدين إعادة تهيئة كل الإنجاز من البداية؟')){
+    localStorage.removeItem(KEY);
+    state=load();render();
+  }
+}
+
+/* ===== confetti ===== */
+function celebrate(){
+  const colors=['#9ad8c4','#a9d6ef','#f5b8cc','#f6cf6a','#cdb8ec','#5fb89e'];
+  for(let i=0;i<70;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    if(Math.random()>.5)c.style.borderRadius='50%';
+    document.body.appendChild(c);
+    const dur=2.2+Math.random()*1.6;
+    c.animate([
+      {top:'-10px',opacity:1,transform:`translateX(0) rotate(0deg)`},
+      {top:'105vh',opacity:.9,transform:`translateX(${(Math.random()-.5)*180}px) rotate(${Math.random()*720}deg)`}
+    ],{duration:dur*1000,easing:'cubic-bezier(.3,.7,.5,1)'});
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
